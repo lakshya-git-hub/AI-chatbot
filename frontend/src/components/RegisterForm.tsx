@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
 export default function RegisterForm() {
   const [name, setName] = useState('');
@@ -21,20 +21,20 @@ export default function RegisterForm() {
       } else if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError('Registration failed: An unknown error occurred.');
+        setError('Failed to register: An unknown error occurred.');
       }
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-800 to-blue-900 animate-gradient-shift">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-800 to-indigo-900 animate-gradient-shift">
       <div className="relative max-w-md w-full p-10 bg-white rounded-xl shadow-2xl space-y-8 transform transition-all duration-300 ease-in-out hover:scale-105 animate-fade-in">
         <div>
           <h2 className="mt-6 text-center text-4xl font-extrabold text-gray-900 tracking-tight">
-            Create Your Account
+            Join Us Today!
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Join us to start your AI conversations
+            Create your account to get started
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -46,7 +46,7 @@ export default function RegisterForm() {
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
               <label htmlFor="name" className="sr-only">
-                Full name
+                Full Name
               </label>
               <input
                 id="name"
@@ -56,8 +56,8 @@ export default function RegisterForm() {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="appearance-none rounded-t-md relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-base transition-all duration-200"
-                placeholder="Full name"
+                className="appearance-none rounded-t-md relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-base transition-all duration-200"
+                placeholder="Full Name"
               />
             </div>
             <div>
@@ -72,7 +72,7 @@ export default function RegisterForm() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-base transition-all duration-200"
+                className="appearance-none rounded-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-base transition-all duration-200"
                 placeholder="Email address"
               />
             </div>
@@ -88,7 +88,7 @@ export default function RegisterForm() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="appearance-none rounded-b-md relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-base transition-all duration-200"
+                className="appearance-none rounded-b-md relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-base transition-all duration-200"
                 placeholder="Password"
               />
             </div>
@@ -97,7 +97,7 @@ export default function RegisterForm() {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-lg font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transform transition-transform duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-lg font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transform transition-transform duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
             >
               Register
             </button>

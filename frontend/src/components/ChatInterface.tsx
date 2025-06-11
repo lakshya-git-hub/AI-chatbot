@@ -3,7 +3,7 @@ import { useChat } from '../contexts/ChatContext';
 import { useAuth } from '../contexts/AuthContext';
 import { StarIcon } from '@heroicons/react/24/solid';
 import { StarIcon as StarOutlineIcon } from '@heroicons/react/24/outline';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
 export default function ChatInterface() {
   const [message, setMessage] = useState('');
@@ -50,6 +50,8 @@ export default function ChatInterface() {
       const success = await loadMoreMessages(page + 1);
       if (success) {
         setPage(page + 1);
+      } else {
+        setHasMore(false);
       }
     }
   };

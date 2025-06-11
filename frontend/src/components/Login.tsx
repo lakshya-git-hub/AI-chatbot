@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../contexts/AuthContext';
 import Link from 'next/link';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -41,7 +41,7 @@ export default function Login() {
             Sign in to your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Or&nbsp;
+            Or{' '}
             <Link href="/register" className="font-medium text-blue-600 hover:text-blue-500">
               create a new account
             </Link>

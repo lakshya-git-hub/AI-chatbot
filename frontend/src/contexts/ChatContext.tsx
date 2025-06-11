@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { io, Socket } from 'socket.io-client';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { useAuth } from './AuthContext';
 
 interface Message {
