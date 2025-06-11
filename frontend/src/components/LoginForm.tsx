@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');

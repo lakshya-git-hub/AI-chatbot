@@ -164,12 +164,12 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 
   const rateMessage = async (messageId: string, rating: number) => {
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/chat/rate`, { messageId, rating }, {
+      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/chat/rate`, { messageId, rating }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessages((prev) =>
         prev.map((msg) =>
-          msg._id === messageId ? { ...msg, rating } : msg
+          msg._id === messageId ? { ...msg, rating: data.rating } : msg
         )
       );
     } catch (err: unknown) {
