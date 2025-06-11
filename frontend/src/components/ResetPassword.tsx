@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
 
 export default function ResetPassword() {
@@ -33,8 +33,15 @@ export default function ResetPassword() {
         password
       });
       router.push('/login?message=Password has been reset successfully');
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'An error occurred');
+    } catch (err: unknown) {
+      console.error('Error resetting password:', err);
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.error || err.message);
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     } finally {
       setLoading(false);
     }

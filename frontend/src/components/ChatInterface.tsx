@@ -3,11 +3,10 @@ import { useChat } from '../contexts/ChatContext';
 import { useAuth } from '../contexts/AuthContext';
 import { StarIcon } from '@heroicons/react/24/solid';
 import { StarIcon as StarOutlineIcon } from '@heroicons/react/24/outline';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 export default function ChatInterface() {
   const [message, setMessage] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [showChatbotNameModal, setShowChatbotNameModal] = useState(false);
@@ -15,7 +14,6 @@ export default function ChatInterface() {
   const { messages, sendMessage, rateMessage, loading, error, loadMoreMessages, isGenerating } = useChat();
   const { user, logout, token, updateUserChatbotName } = useAuth();
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -36,7 +34,6 @@ export default function ChatInterface() {
     if (message.trim()) {
       sendMessage(message);
       setMessage('');
-      setIsTyping(false);
     }
   };
 
@@ -72,9 +69,15 @@ export default function ChatInterface() {
       );
       updateUserChatbotName(response.data.chatbotName);
       setShowChatbotNameModal(false);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error updating chatbot name:', err);
-      alert(`Failed to update chatbot name: ${err.response?.data?.error || err.message}`);
+      if (axios.isAxiosError(err)) {
+        alert(`Failed to update chatbot name: ${err.response?.data?.error || err.message}`);
+      } else if (err instanceof Error) {
+        alert(`Failed to update chatbot name: ${err.message}`);
+      } else {
+        alert('Failed to update chatbot name: An unknown error occurred.');
+      }
     }
   };
 

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 interface User {
   _id: string;
@@ -50,8 +50,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setToken(token);
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(userData));
-    } catch (error) {
-      throw new Error('Login failed');
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        throw new Error(err.response?.data?.error || err.message || 'Login failed');
+      } else if (err instanceof Error) {
+        throw new Error(err.message);
+      } else {
+        throw new Error('Login failed: An unknown error occurred.');
+      }
     }
   };
 
@@ -68,8 +74,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setToken(token);
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(userData));
-    } catch (error) {
-      throw new Error('Registration failed');
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        throw new Error(err.response?.data?.error || err.message || 'Registration failed');
+      } else if (err instanceof Error) {
+        throw new Error(err.message);
+      } else {
+        throw new Error('Registration failed: An unknown error occurred.');
+      }
     }
   };
 

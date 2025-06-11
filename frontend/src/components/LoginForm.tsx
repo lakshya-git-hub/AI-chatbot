@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import axios, { AxiosError } from 'axios';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -13,8 +14,14 @@ export default function LoginForm() {
 
     try {
       await login(email, password);
-    } catch (error) {
-      setError('Invalid email or password');
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.error || err.message);
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Failed to login: An unknown error occurred.');
+      }
     }
   };
 

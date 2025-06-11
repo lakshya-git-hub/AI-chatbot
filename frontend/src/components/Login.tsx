@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../contexts/AuthContext';
 import Link from 'next/link';
+import axios, { AxiosError } from 'axios';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -19,8 +20,14 @@ export default function Login() {
     try {
       await login(email, password);
       router.push('/chat');
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to login');
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.error || err.message);
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Failed to login: An unknown error occurred.');
+      }
     } finally {
       setLoading(false);
     }
@@ -34,7 +41,7 @@ export default function Login() {
             Sign in to your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
+            Or&nbsp;
             <Link href="/register" className="font-medium text-blue-600 hover:text-blue-500">
               create a new account
             </Link>

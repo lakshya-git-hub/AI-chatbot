@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../src/contexts/AuthContext';
 import LoginForm from '../src/components/LoginForm';
 import RegisterForm from '../src/components/RegisterForm';

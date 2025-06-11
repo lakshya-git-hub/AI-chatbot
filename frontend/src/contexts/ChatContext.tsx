@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useAuth } from './AuthContext';
 
 interface Message {
@@ -50,8 +50,13 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
         setIsGenerating(false);
       });
 
-      newSocket.on('error', (error: { message: string }) => {
-        setError(error.message);
+      newSocket.on('error', (err: unknown) => {
+        console.error('WebSocket error:', err);
+        if (err && typeof err === 'object' && 'message' in err && typeof err.message === 'string') {
+          setError(err.message);
+        } else {
+          setError('An unknown WebSocket error occurred.');
+        }
         setIsGenerating(false);
       });
 
@@ -75,8 +80,15 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
             }
           );
           setMessages(response.data.messages);
-        } catch (error) {
-          setError('Failed to fetch chat history');
+        } catch (err: unknown) {
+          console.error('Error fetching chat history:', err);
+          if (axios.isAxiosError(err)) {
+            setError(err.response?.data?.error || err.message || 'Failed to fetch chat history');
+          } else if (err instanceof Error) {
+            setError(err.message);
+          } else {
+            setError('Failed to fetch chat history: An unknown error occurred.');
+          }
         } finally {
           setLoading(false);
         }
@@ -93,8 +105,15 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
         headers: { Authorization: `Bearer ${token}` }
       });
       return response.data;
-    } catch (err) {
-      setError('Error fetching messages');
+    } catch (err: unknown) {
+      console.error('Error fetching messages:', err);
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.error || err.message || 'Error fetching messages');
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Error fetching messages: An unknown error occurred.');
+      }
       return null;
     } finally {
       setLoading(false);
@@ -128,8 +147,15 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
       socket.emit('chat message', { userId: user._id, content });
       // Messages will be added to state by the 'chat response' listener (including the actual user message with real ID)
       console.log('Message emitted.');
-    } catch (err) {
-      setError('Error sending message via socket');
+    } catch (err: unknown) {
+      console.error('Error sending message via socket:', err);
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.error || err.message || 'Error sending message via socket');
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Error sending message via socket: An unknown error occurred.');
+      }
       setIsGenerating(false);
     } finally {
       setLoading(false);
@@ -146,8 +172,15 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
           msg._id === messageId ? { ...msg, rating } : msg
         )
       );
-    } catch (err) {
-      setError('Error rating message');
+    } catch (err: unknown) {
+      console.error('Error rating message:', err);
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.error || err.message || 'Error rating message');
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Error rating message: An unknown error occurred.');
+      }
     }
   };
 

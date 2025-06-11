@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
 
 export default function ForgotPassword() {
@@ -18,8 +18,14 @@ export default function ForgotPassword() {
     try {
       const response = await axios.post('/api/auth/forgot-password', { email });
       setMessage(response.data.message);
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'An error occurred');
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.error || err.message);
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     } finally {
       setLoading(false);
     }
