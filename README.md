@@ -121,4 +121,8 @@ OPENAI_API_KEY=your_openai_api_key
 
 ## License
 
-This project is licensed under the MIT License. 
+This project is licensed under the MIT License.
+
+## Deployment Notes
+
+This section added to trigger a new Netlify deploy. 
