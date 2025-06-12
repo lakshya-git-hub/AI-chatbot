@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
-import { InferenceClient } from '@huggingface/inference/client';
+import { HfInference } from '@huggingface/inference';
 import { Message } from '../models/Message';
 import NodeCache from 'node-cache';
 
 // Initialize cache with 5 minutes TTL
 const responseCache = new NodeCache({ stdTTL: 300 });
 
-export const createChatControllers = (inferenceClient: InferenceClient) => {
+export const createChatControllers = (inferenceClient: HfInference) => {
 
   const sendMessage = async (req: Request, res: Response): Promise<void> => {
     try {

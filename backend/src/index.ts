@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import authRoutes from './routes/auth';
 import { Message } from './models/Message';
-import { InferenceClient } from "@huggingface/inference";
+import { HfInference } from "@huggingface/inference";
 import { createChatControllers } from './controllers/chat';
 import createChatRouter from './routes/chat';
 
@@ -24,7 +24,7 @@ const io = new Server(httpServer, {
 });
 
 // Initialize Hugging Face Inference Client
-const inferenceClient = new InferenceClient(process.env.HF_TOKEN);
+const inferenceClient = new HfInference(process.env.HF_TOKEN);
 
 // Create chat controllers
 const chatControllers = createChatControllers(inferenceClient);
