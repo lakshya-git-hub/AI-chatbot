@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { InferenceClient } from "@huggingface/inference";
+import { InferenceClient } from '@huggingface/inference/client';
 import { Message } from '../models/Message';
 import NodeCache from 'node-cache';
 
